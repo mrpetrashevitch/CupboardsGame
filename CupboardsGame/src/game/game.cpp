@@ -1,5 +1,6 @@
 #include "game.h"
 #include "thread_pool/thread_pool.h"
+#include <limits> // std::numeric_limits<float>::max();
 
 namespace game
 {
@@ -336,8 +337,8 @@ namespace game
 	{
 		float max_x_p = 0.f;
 		float max_y_p = 0.f;
-		float min_x_p = 1000000000.f;
-		float min_y_p = 1000000000.f;
+		float min_x_p = std::numeric_limits<float>::max();
+		float min_y_p = std::numeric_limits<float>::max();
 
 		for (auto& i : config.vertex_pos)
 		{
