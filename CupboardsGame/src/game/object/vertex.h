@@ -7,7 +7,7 @@ namespace game::object
 	class vertex
 	{
 	public:
-		vertex(const sf::Vector2f& pos, float mult, sf::Sprite sp, sf::Color color = sf::Color::Transparent);;
+		vertex(const sf::Vector2f& pos, float mult, const sf::Sprite& sp, sf::Color color = sf::Color::Transparent);;
 		~vertex();;
 		void set_color(sf::Color color);
 		sf::Color get_color();

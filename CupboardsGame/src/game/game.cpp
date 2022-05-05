@@ -41,7 +41,7 @@ namespace game
 
 	game::game() :
 		_inited(false),
-		_window(sf::VideoMode(1200, 800, 32), "Cupboards", sf::Style::Titlebar | sf::Style::Close | sf::Style::Fullscreen, sf::ContextSettings(0, 0, 16))
+		_window(sf::VideoMode(1200, 800, 32), "Cupboards", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Fullscreen*/, sf::ContextSettings(0, 0, 16))
 	{
 		_window.setVerticalSyncEnabled(true);
 	}
@@ -63,11 +63,13 @@ namespace game
 
 		_music.setLoop(true);
 
-		_background.setTexture(_background_texture);
-		_background.setPosition(0, 0);
+		sf::Sprite background;
+		background.setTexture(_background_texture);
+		background.setPosition(0, 0);
 		auto back_size = _background_texture.getSize();
 		float scale_background = win_size.x / back_size.x > win_size.y / back_size.y ? win_size.x / back_size.x : win_size.y / back_size.y;
-		_background.scale(scale_background, scale_background);
+		background.scale(scale_background, scale_background);
+		_background.set_sprite(background);
 
 		_text_game_name.setFont(_font);
 		_text_game_name.setCharacterSize(100);
@@ -160,8 +162,14 @@ namespace game
 								path.str("");
 								path << "Level " << level;
 								_text_level.setString(path.str());
+
 								total_step = 0;
 								level++;
+
+								path.str("");
+								path << total_step;
+								_text_total_step.setString("Steps: " + path.str());
+
 								clock.restart();
 								game_state = game_state::level;
 							}
@@ -192,7 +200,8 @@ namespace game
 
 			float dt_time = clock.restart().asSeconds();
 			_window.clear();
-			_window.draw(_background);
+			_background.update(dt_time);
+			_background.on_drow(_window);
 			switch (game_state)
 			{
 			case game_state::main_menu:
@@ -286,12 +295,14 @@ namespace game
 
 		_graph.set_vertex(g_con.vertex_count);
 
-		auto [mult, off_x, off_y] = _get_scale(g_con, _window.getSize());
+		auto mult = _set_scale(g_con, _window.getSize());
+
+		if (mult > 2.2f)mult = 2.2f;
 
 		sf::Sprite s_chip_back;
 		s_chip_back.setTexture(_chip_back_texture);
 		for (auto& i : g_con.vertex_pos)
-			_vertexes.push_back({ {i.x + off_x, i.y + off_y},mult ,s_chip_back });
+			_vertexes.push_back({ {i.x, i.y},mult ,s_chip_back });
 
 		for (auto& i : g_con.chip_pos_win)
 			_vertexes[i].set_color(g_colors[i]);
@@ -333,46 +344,42 @@ namespace game
 		return win;
 	}
 
-	std::tuple<float, float, float> game::_get_scale(const config::game_config& config, const sf::Vector2u& window_size)
+	float game::_set_scale(config::game_config& config, const sf::Vector2u& window_size)
 	{
-		float max_x_p = 0.f;
-		float max_y_p = 0.f;
-		float min_x_p = std::numeric_limits<float>::max();
-		float min_y_p = std::numeric_limits<float>::max();
+		const float border_left = 100.f;
+		const float border_right = 100.f;
+		const float border_top = 100.f;
+		const float border_bottom = 100.f;
+
+		float max_x = 0.f;
+		float max_y = 0.f;
+		float min_x = std::numeric_limits<float>::max();
+		float min_y = std::numeric_limits<float>::max();
 
 		for (auto& i : config.vertex_pos)
 		{
-			if (i.x > max_x_p) max_x_p = i.x;
-			if (i.y > max_y_p) max_y_p = i.y;
-			if (i.x < min_x_p) min_x_p = i.x;
-			if (i.y < min_y_p) min_y_p = i.y;
+			if (i.x > max_x) max_x = i.x;
+			if (i.y > max_y) max_y = i.y;
+			if (i.x < min_x) min_x = i.x;
+			if (i.y < min_y) min_y = i.y;
 		}
 
-		float off_x = ((float)window_size.x - (max_x_p - min_x_p)) / 2.f;
-		float off_y = ((float)window_size.y - (max_y_p - min_y_p)) / 2.f;
+		float dx = max_x - min_x;
+		float dy = max_y - min_y;
+		float w_screen = window_size.x - (border_left + border_right);
+		float h_screen = window_size.y - (border_top + border_bottom);
+		float mult_x = w_screen / dx;
+		float mult_y = h_screen / dy;
+		float mult = mult_x < mult_y ? mult_x : mult_y;
+		float of_x = (w_screen - mult * dx) / 2.f;
+		float of_y = (h_screen - mult * dy) / 2.f;
 
-		float mul_x = (float)window_size.x / (max_x_p + min_x_p);
-		float mul_y = (float)window_size.y / (max_y_p + min_y_p);
-
-		float mult = 1.f;
-
-		if (mul_x > mul_y)
+		for (auto& i : config.vertex_pos)
 		{
-			mult = mul_y;
-			off_x -= off_y;
-			off_y = 0;
+			i.x = (i.x - min_x) * mult + border_left + of_x;
+			i.y = (i.y - min_y) * mult + border_top + of_y;
 		}
-		else
-		{
-			off_y -= off_x;
-			off_x = 0;
-			mult = mul_x;
-		}
-
-		off_x /= mult;
-		off_y /= mult;
-
-		return { mult , off_x, off_y };
+		return mult;
 	}
 
 	int game::_on_chip_click(const sf::Vector2f& pos)

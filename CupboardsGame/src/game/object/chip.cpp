@@ -1,7 +1,7 @@
 #include "chip.h"
 namespace game::object
 {
-	chip::chip(const sf::Vector2f& pos, float mult, sf::Sprite sp, sf::Color color) :
+	chip::chip(const sf::Vector2f& pos, float mult, const sf::Sprite& sp, sf::Color color) :
 		_base(sp),
 		_base_back(sp),
 		_base_size(40.f * mult, 34.3f * mult),

@@ -8,7 +8,7 @@ namespace game::object
 	class chip
 	{
 	public:
-		chip(const sf::Vector2f& pos, float mult, sf::Sprite sp, sf::Color color = sf::Color::Transparent);;
+		chip(const sf::Vector2f& pos, float mult, const sf::Sprite& sp, sf::Color color = sf::Color::Transparent);;
 		~chip() {};
 		void move_to_dest(const std::vector<sf::Vector2f>& path);
 		bool on_select(const sf::Vector2f& pos);

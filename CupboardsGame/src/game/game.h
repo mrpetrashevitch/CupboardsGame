@@ -7,8 +7,7 @@
 #include "object/chip.h"
 #include "object/vertex.h"
 #include "object/edge.h"
-
-#include <tuple>
+#include "object/background.h"
 
 namespace game
 {
@@ -28,7 +27,7 @@ namespace game
 		sf::Texture _chip_back_texture;
 		sf::Texture _chip_back_blur_texture;
 		sf::Texture _background_texture;
-		sf::Sprite _background;
+
 		sf::Text _text_game_name;
 		sf::Text _text_press_start;
 		sf::Text _text_next_level;
@@ -40,12 +39,13 @@ namespace game
 		std::vector<object::vertex> _vertexes;
 		std::vector<object::chip> _chips;
 		std::vector<object::edge> _edges;
+		object::background _background;
 
 		bool _inited;
 		bool _load_res();
 		bool _load_level(const char* path_config_level);
 		bool _check_win();
-		std::tuple<float, float, float> _get_scale(const config::game_config& config, const sf::Vector2u& window_size);
+		float _set_scale(config::game_config& config, const sf::Vector2u& window_size);
 		int _on_chip_click(const sf::Vector2f& pos);
 		bool _on_vertex_click(const sf::Vector2f& pos, int chip_index);
 	};

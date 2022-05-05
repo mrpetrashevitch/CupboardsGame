@@ -2,7 +2,7 @@
 
 namespace game::object
 {
-	vertex::vertex(const sf::Vector2f& pos, float mult, sf::Sprite sp, sf::Color color) :
+	vertex::vertex(const sf::Vector2f& pos, float mult, const sf::Sprite& sp, sf::Color color) :
 		_base(sp),
 		_base_size(70.f * mult, 60.f * mult),
 		_base_back(sp),
@@ -10,11 +10,11 @@ namespace game::object
 	{
 		_base.setScale(_base_size.x / sp.getTexture()->getSize().x, _base_size.y / sp.getTexture()->getSize().y);
 		_base.setOrigin(sp.getTexture()->getSize().x / 2.f, sp.getTexture()->getSize().y / 2.f);
-		_base.setPosition(pos.x * mult, pos.y * mult);
+		_base.setPosition(pos.x, pos.y);
 
 		_base_back.setScale(_base_back_size.x / sp.getTexture()->getSize().x, _base_back_size.y / sp.getTexture()->getSize().y);
 		_base_back.setOrigin(sp.getTexture()->getSize().x / 2.f, sp.getTexture()->getSize().y / 2.f);
-		_base_back.setPosition(pos.x * mult, pos.y * mult);
+		_base_back.setPosition(pos.x, pos.y);
 
 		set_color(color);
 	}
