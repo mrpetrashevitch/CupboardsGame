@@ -10,41 +10,43 @@
 
 #include <tuple>
 
-class game
+namespace game
 {
-public:
-	game();
-	~game();
+	class game
+	{
+	public:
+		game();
+		~game();
 
-	bool init();
-	void run();
-private:
-	sf::RenderWindow _window;
-	sf::Font _font;
-	sf::Music _music;
-	sf::Texture _chip_texture;
-	sf::Texture _chip_back_texture;
-	sf::Texture _chip_back_blur_texture;
-	sf::Texture _background_texture;
-	sf::Sprite _background;
-	sf::Text _text_game_name;
-	sf::Text _text_press_start;
-	sf::Text _text_next_level;
-	sf::Text _text_loading;
-	sf::Text _text_total_step;
-	sf::Text _text_level;
-	
-	graph _graph;
-	std::vector<vertex> _vertexes;
-	std::vector<chip> _chips;
-	std::vector<edge> _edges;
+		bool init();
+		void run();
+	private:
+		sf::RenderWindow _window;
+		sf::Font _font;
+		sf::Music _music;
+		sf::Texture _chip_texture;
+		sf::Texture _chip_back_texture;
+		sf::Texture _chip_back_blur_texture;
+		sf::Texture _background_texture;
+		sf::Sprite _background;
+		sf::Text _text_game_name;
+		sf::Text _text_press_start;
+		sf::Text _text_next_level;
+		sf::Text _text_loading;
+		sf::Text _text_total_step;
+		sf::Text _text_level;
 
-	bool _inited;
-	bool _load_res();
-	bool _load_level(const char* path_config_level);
-	bool _check_win();
-	std::tuple<float, float, float> _get_scale(const game_config& config, const sf::Vector2u& window_size);
-	int _on_chip_click(const sf::Vector2f& pos);
-	bool _on_vertex_click(const sf::Vector2f& pos, int chip_index);
-};
+		graph::graph _graph;
+		std::vector<object::vertex> _vertexes;
+		std::vector<object::chip> _chips;
+		std::vector<object::edge> _edges;
 
+		bool _inited;
+		bool _load_res();
+		bool _load_level(const char* path_config_level);
+		bool _check_win();
+		std::tuple<float, float, float> _get_scale(const config::game_config& config, const sf::Vector2u& window_size);
+		int _on_chip_click(const sf::Vector2f& pos);
+		bool _on_vertex_click(const sf::Vector2f& pos, int chip_index);
+	};
+}
