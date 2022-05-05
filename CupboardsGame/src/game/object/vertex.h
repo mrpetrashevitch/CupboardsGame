@@ -2,11 +2,11 @@
 #include "../../CupboardsGame/build_config.h"
 #include <SFML/Graphics.hpp>
 
-class shape_static
+class vertex
 {
 public:
-	shape_static(const sf::Vector2f& pos, float mult, sf::Sprite sp, sf::Color color = sf::Color::Transparent);;
-	~shape_static();;
+	vertex(const sf::Vector2f& pos, float mult, sf::Sprite sp, sf::Color color = sf::Color::Transparent);;
+	~vertex();;
 	void set_color(sf::Color color);
 	sf::Color get_color();
 	bool on_select(const sf::Vector2f& pos);

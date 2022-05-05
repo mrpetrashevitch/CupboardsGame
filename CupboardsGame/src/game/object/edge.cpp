@@ -1,6 +1,6 @@
-#include "edge_static.h"
+#include "edge.h"
 
-edge_static::edge_static(const sf::Vector2f& pos_s, const sf::Vector2f& pos_d, float mult)
+edge::edge(const sf::Vector2f& pos_s, const sf::Vector2f& pos_d, float mult)
 {
 	auto dt = pos_s - pos_d;
 
@@ -15,12 +15,12 @@ edge_static::edge_static(const sf::Vector2f& pos_s, const sf::Vector2f& pos_d, f
 	_base.setRotation(alpha);
 }
 
-edge_static::~edge_static()
+edge::~edge()
 {
 
 }
 
-void edge_static::on_drow(sf::RenderWindow& window)
+void edge::on_drow(sf::RenderWindow& window)
 {
 	window.draw(_base);
 }

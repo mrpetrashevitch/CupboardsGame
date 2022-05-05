@@ -1,6 +1,6 @@
-#include "shape_static.h"
+#include "vertex.h"
 
-shape_static::shape_static(const sf::Vector2f& pos, float mult, sf::Sprite sp, sf::Color color) :
+vertex::vertex(const sf::Vector2f& pos, float mult, sf::Sprite sp, sf::Color color) :
 	_base(sp),
 	_base_size(70.f * mult, 60.f * mult),
 	_base_back(sp),
@@ -17,12 +17,12 @@ shape_static::shape_static(const sf::Vector2f& pos, float mult, sf::Sprite sp, s
 	set_color(color);
 }
 
-shape_static::~shape_static() 
+vertex::~vertex() 
 {
 
 }
 
-void shape_static::set_color(sf::Color color)
+void vertex::set_color(sf::Color color)
 {
 	_color_sel = color;
 	_color_norm = color;
@@ -35,14 +35,14 @@ void shape_static::set_color(sf::Color color)
 	_base_back.setColor(_color_back_norm);
 }
 
-sf::Color shape_static::get_color()
+sf::Color vertex::get_color()
 {
 	auto col = _color_norm;
 	col.a = 255;
 	return col;
 }
 
-bool shape_static::on_select(const sf::Vector2f& pos)
+bool vertex::on_select(const sf::Vector2f& pos)
 {
 	if ((_base.getPosition().x - _base_size.x / 2 < pos.x) &&
 		(_base.getPosition().x + _base_size.x / 2 > pos.x) &&
@@ -58,7 +58,7 @@ bool shape_static::on_select(const sf::Vector2f& pos)
 	return _is_selected;
 }
 
-void shape_static::on_entered(const sf::Vector2f& pos)
+void vertex::on_entered(const sf::Vector2f& pos)
 {
 	if ((_base.getPosition().x - _base_size.x / 2 < pos.x) &&
 		(_base.getPosition().x + _base_size.x / 2 > pos.x) &&
@@ -74,7 +74,7 @@ void shape_static::on_entered(const sf::Vector2f& pos)
 	}
 }
 
-void shape_static::set_flash(bool is_flash)
+void vertex::set_flash(bool is_flash)
 {
 	_is_flash = is_flash;
 
@@ -88,13 +88,13 @@ void shape_static::set_flash(bool is_flash)
 	}
 }
 
-void shape_static::on_drow(sf::RenderWindow& window)
+void vertex::on_drow(sf::RenderWindow& window)
 {
 	window.draw(_base_back);
 	window.draw(_base);
 }
 
-const sf::Vector2f& shape_static::get_pos()
+const sf::Vector2f& vertex::get_pos()
 {
 	return _base.getPosition();
 }

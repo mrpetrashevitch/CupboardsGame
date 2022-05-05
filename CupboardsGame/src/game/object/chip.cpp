@@ -1,6 +1,6 @@
-#include "shape_move.h"
+#include "chip.h"
 
-shape_move::shape_move(const sf::Vector2f& pos, float mult, sf::Sprite sp, sf::Color color) :
+chip::chip(const sf::Vector2f& pos, float mult, sf::Sprite sp, sf::Color color) :
 	_base(sp),
 	_base_back(sp),
 	_base_size(40.f * mult, 34.3f * mult),
@@ -27,7 +27,7 @@ shape_move::shape_move(const sf::Vector2f& pos, float mult, sf::Sprite sp, sf::C
 	_base_back.setColor(_color_back_norm);
 }
 
-void shape_move::move_to_dest(const std::vector<sf::Vector2f>& path)
+void chip::move_to_dest(const std::vector<sf::Vector2f>& path)
 {
 	_is_move_dest = true;
 
@@ -35,7 +35,7 @@ void shape_move::move_to_dest(const std::vector<sf::Vector2f>& path)
 		_path.push(i);
 }
 
-bool shape_move::on_select(const sf::Vector2f& pos)
+bool chip::on_select(const sf::Vector2f& pos)
 {
 	if ((_base.getPosition().x - _base_size.x / 2 < pos.x) &&
 		(_base.getPosition().x + _base_size.x / 2 > pos.x) &&
@@ -53,7 +53,7 @@ bool shape_move::on_select(const sf::Vector2f& pos)
 	return _is_selected;
 }
 
-void shape_move::on_entered(const sf::Vector2f& pos)
+void chip::on_entered(const sf::Vector2f& pos)
 {
 	if ((_base.getPosition().x - _base_size.x / 2 < pos.x) &&
 		(_base.getPosition().x + _base_size.x / 2 > pos.x) &&
@@ -69,7 +69,7 @@ void shape_move::on_entered(const sf::Vector2f& pos)
 	}
 }
 
-void shape_move::update(float deltaTime)
+void chip::update(float deltaTime)
 {
 	if (_is_move_dest)
 	{
@@ -95,33 +95,33 @@ void shape_move::update(float deltaTime)
 	}
 }
 
-void shape_move::on_drow(sf::RenderWindow& window)
+void chip::on_drow(sf::RenderWindow& window)
 {
 	window.draw(_base_back);
 	window.draw(_base);
 }
 
-const sf::Vector2f& shape_move::get_pos()
+const sf::Vector2f& chip::get_pos()
 {
 	return _base.getPosition();
 }
 
-void shape_move::set_vertex_index(int vertex_index)
+void chip::set_vertex_index(int vertex_index)
 {
 	_vertex_index = vertex_index;
 }
 
-int shape_move::get_vertex_index()
+int chip::get_vertex_index()
 {
 	return _vertex_index;
 }
 
-void shape_move::set_vertex_dest(int vertex_dest)
+void chip::set_vertex_dest(int vertex_dest)
 {
 	_vertex_dest = vertex_dest;
 }
 
-int shape_move::get_vertex_dest()
+int chip::get_vertex_dest()
 {
 	return _vertex_dest;
 }

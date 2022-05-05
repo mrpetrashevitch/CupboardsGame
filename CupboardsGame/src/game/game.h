@@ -4,9 +4,9 @@
 
 #include "config/config.h"
 #include "graph/graph.h"
-#include "object/shape_move.h"
-#include "object/shape_static.h"
-#include "object/edge_static.h"
+#include "object/chip.h"
+#include "object/vertex.h"
+#include "object/edge.h"
 
 #include <tuple>
 
@@ -35,9 +35,9 @@ private:
 	sf::Text _text_level;
 	
 	graph _graph;
-	std::vector<shape_static> _vertexes;
-	std::vector<shape_move> _chips;
-	std::vector<edge_static> _edges;
+	std::vector<vertex> _vertexes;
+	std::vector<chip> _chips;
+	std::vector<edge> _edges;
 
 	bool _inited;
 	bool _load_res();

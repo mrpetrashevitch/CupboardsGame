@@ -27,13 +27,13 @@
     <ClCompile Include="src\game\graph\graph.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\object\edge_static.cpp">
+    <ClCompile Include="src\game\object\edge.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\object\shape_move.cpp">
+    <ClCompile Include="src\game\object\chip.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\object\shape_static.cpp">
+    <ClCompile Include="src\game\object\vertex.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,13 +47,13 @@
     <ClInclude Include="src\game\graph\graph.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\object\edge_static.h">
+    <ClInclude Include="src\game\object\edge.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\object\shape_move.h">
+    <ClInclude Include="src\game\object\chip.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\object\shape_static.h">
+    <ClInclude Include="src\game\object\vertex.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\thread_pool\thread_pool.h">

@@ -3,11 +3,11 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
-class edge_static
+class edge
 {
 public:
-	edge_static(const sf::Vector2f& pos_s, const sf::Vector2f& pos_d, float mult);
-	~edge_static();
+	edge(const sf::Vector2f& pos_s, const sf::Vector2f& pos_d, float mult);
+	~edge();
 	void on_drow(sf::RenderWindow& window);
 private:
 	sf::RectangleShape _base;

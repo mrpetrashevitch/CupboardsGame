@@ -396,9 +396,9 @@ copy /Y "$(SolutionDir)SFML\bin\$(PlatformTarget)\openal32.dll"  "$(TargetDir)op
     <ClCompile Include="src\game\config\config.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\graph\graph.cpp" />
-    <ClCompile Include="src\game\object\edge_static.cpp" />
-    <ClCompile Include="src\game\object\shape_move.cpp" />
-    <ClCompile Include="src\game\object\shape_static.cpp" />
+    <ClCompile Include="src\game\object\edge.cpp" />
+    <ClCompile Include="src\game\object\chip.cpp" />
+    <ClCompile Include="src\game\object\vertex.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -406,9 +406,9 @@ copy /Y "$(SolutionDir)SFML\bin\$(PlatformTarget)\openal32.dll"  "$(TargetDir)op
     <ClInclude Include="src\game\config\config.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\graph\graph.h" />
-    <ClInclude Include="src\game\object\edge_static.h" />
-    <ClInclude Include="src\game\object\shape_move.h" />
-    <ClInclude Include="src\game\object\shape_static.h" />
+    <ClInclude Include="src\game\object\edge.h" />
+    <ClInclude Include="src\game\object\chip.h" />
+    <ClInclude Include="src\game\object\vertex.h" />
     <ClInclude Include="src\game\thread_pool\thread_pool.h" />
   </ItemGroup>
   <ItemGroup>
