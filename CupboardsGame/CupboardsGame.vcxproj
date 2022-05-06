@@ -417,9 +417,6 @@ copy /Y "$(SolutionDir)SFML\bin\$(PlatformTarget)\openal32.dll"  "$(TargetDir)op
     <None Include="resources\back_music.ogg" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="resources\ball.wav" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="resources\game_back.jpg" />
     <Image Include="resources\hex.png" />
     <Image Include="resources\hex_back.png" />

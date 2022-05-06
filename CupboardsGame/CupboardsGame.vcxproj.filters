@@ -73,11 +73,6 @@
     <None Include="resources\back_music.ogg" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="resources\ball.wav">
-      <Filter>Файлы ресурсов</Filter>
-    </Media>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="resources\game_back.jpg">
       <Filter>Файлы ресурсов</Filter>
     </Image>
