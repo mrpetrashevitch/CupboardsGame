@@ -33,6 +33,5 @@ namespace game::object
 
 		bool _is_selected = false;
 		bool _is_flash = false;
-
 	};
 }

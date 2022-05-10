@@ -68,6 +68,9 @@
     <ClInclude Include="src\game\object\background.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\back_music.ogg" />
@@ -80,6 +83,9 @@
       <Filter>Файлы ресурсов</Filter>
     </Image>
     <Image Include="resources\hex_back.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="resources\Cupboards.ico">
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>
@@ -101,5 +107,10 @@
     <Media Include="resources\sound_level_complete.wav">
       <Filter>Файлы ресурсов</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CupboardsGame.rc">
+      <Filter>Файлы ресурсов</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
