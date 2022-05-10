@@ -1,6 +1,6 @@
 #include "game.h"
 #include "thread_pool/thread_pool.h"
-#include <limits> // std::numeric_limits<float>::max();
+#include <limits>
 
 namespace game
 {
@@ -9,8 +9,8 @@ namespace game
 		sf::Color::Color(0x00,0xFF,0x00), //GREEN
 		sf::Color::Color(0x00,0x00,0xFF), //BLUE
 		sf::Color::Color(0xFF,0xFF,0x00), //YELLOW
-		sf::Color::Color(0xFF,0x00,0xFF), //CYAN
-		sf::Color::Color(0x00,0xFF,0xFF), //MAGENTA
+		sf::Color::Color(0xFF,0x00,0xFF), //MAGENTA
+		sf::Color::Color(0x00,0xFF,0xFF), //CYAN
 
 		sf::Color::Color(0x8D,0x6F,0x47), //BROWN
 		sf::Color::Color(0x4E,0x5D,0x6C), //CHARCOAL
@@ -34,16 +34,22 @@ namespace game
 	enum class game_state
 	{
 		main_menu,
-		loading_level,
-		end_level,
-		level,
+		level_loading,
+		level_complete,
+		level_on,
+		game_over,
 	};
 
 	game::game() :
 		_inited(false),
-		_window(sf::VideoMode(1200, 800, 32), "Cupboards", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Fullscreen*/, sf::ContextSettings(0, 0, 16))
+#ifdef _DEBUG
+		_window(sf::VideoMode(1200, 800), "Cupboards", sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 16))
+#else
+		_window(sf::VideoMode(1200, 800), "Cupboards", sf::Style::Fullscreen, sf::ContextSettings(0, 0, 16))
+#endif // _DEBUG
 	{
 		_window.setVerticalSyncEnabled(true);
+		_window.setFramerateLimit(120);
 	}
 
 	game::~game()
@@ -78,16 +84,23 @@ namespace game
 		_text_game_name.setOrigin(_text_game_name.findCharacterPos(9).x / 2, 100);
 		_text_game_name.setPosition(win_size.x / 2, win_size.y / 2);
 
+		_text_game_over.setFont(_font);
+		_text_game_over.setCharacterSize(100);
+		_text_game_over.setString("Game over");
+		_text_game_over.setFillColor(sf::Color::White);
+		_text_game_over.setOrigin(_text_game_over.findCharacterPos(9).x / 2, 100);
+		_text_game_over.setPosition(win_size.x / 2, win_size.y / 2);
+
 		_text_press_start.setFont(_font);
 		_text_press_start.setCharacterSize(40);
-		_text_press_start.setString("Press space to start the game");
+		_text_press_start.setString("Press space to start");
 		_text_press_start.setFillColor(sf::Color::White);
 		_text_press_start.setOrigin(_text_press_start.findCharacterPos(100).x / 2, 0);
 		_text_press_start.setPosition(win_size.x / 2, win_size.y / 2);
 
 		_text_next_level.setFont(_font);
 		_text_next_level.setCharacterSize(40);
-		_text_next_level.setString("Press space to go to the next level");
+		_text_next_level.setString("Press space to continue");
 		_text_next_level.setFillColor(sf::Color::White);
 		_text_next_level.setOrigin(_text_next_level.findCharacterPos(100).x / 2, 0);
 		_text_next_level.setPosition(win_size.x / 2, win_size.y / 2);
@@ -119,6 +132,9 @@ namespace game
 	{
 		if (!_inited) return;
 
+		sf::Sound sound_level_complete(_sound_level_complete_buffer);
+		sound_level_complete.setVolume(30.f);
+
 		thread_pool thread_pool(1);
 		sf::Clock clock;
 
@@ -144,44 +160,53 @@ namespace game
 				}
 
 				if ((game_state == game_state::main_menu ||
-					game_state == game_state::end_level) &&
+					game_state == game_state::level_complete ||
+					game_state == game_state::game_over) &&
 					event.type == sf::Event::KeyPressed &&
 					event.key.code == sf::Keyboard::Space)
 				{
-					game_state = game_state::loading_level;
-
-					thread_pool.push_task([&]()
-						{
-							//loading simulation
-							std::this_thread::sleep_for(std::chrono::seconds(1));
-
-							std::ostringstream path;
-							path << "resources/level" << level << ".txt";
-							if (_load_level(path.str().c_str()))
+					if (game_state != game_state::game_over)
+					{
+						game_state = game_state::level_loading;
+						thread_pool.push_task([&]()
 							{
-								path.str("");
-								path << "Level " << level;
-								_text_level.setString(path.str());
+								//loading simulation
+								std::this_thread::sleep_for(std::chrono::seconds(1));
 
-								total_step = 0;
-								level++;
+								std::ostringstream path;
+								path << "resources/level" << level << ".txt";
+								if (_load_level(path.str().c_str()))
+								{
+									path.str("");
+									path << "Level " << level;
+									_text_level.setString(path.str());
 
-								path.str("");
-								path << total_step;
-								_text_total_step.setString("Steps: " + path.str());
+									total_step = 0;
+									level++;
 
-								clock.restart();
-								game_state = game_state::level;
-							}
-							else
-							{
-								level = 1;
-								game_state = game_state::main_menu;
-							}
-						});
+									path.str("");
+									path << total_step;
+									_text_total_step.setString("Steps: " + path.str());
+
+									clock.restart();
+									game_state = game_state::level_on;
+								}
+								else
+								{
+									level = 1;
+									game_state = game_state::game_over;
+									//
+								}
+							});
+					}
+					else
+					{
+						game_state = game_state::main_menu;
+					}
+
 				}
 
-				if (game_state == game_state::level &&
+				if (game_state == game_state::level_on &&
 					event.type == sf::Event::MouseButtonPressed &&
 					event.key.code == sf::Mouse::Left)
 				{
@@ -208,10 +233,10 @@ namespace game
 				_window.draw(_text_game_name);
 				_window.draw(_text_press_start);
 				break;
-			case game_state::loading_level:
+			case game_state::level_loading:
 				_window.draw(_text_loading);
 				break;
-			case game_state::end_level:
+			case game_state::level_complete:
 				for (auto& i : _chips)
 					i.update(dt_time);
 				for (auto& i : _edges)
@@ -224,9 +249,12 @@ namespace game
 				_window.draw(_text_level);
 				_window.draw(_text_next_level);
 				break;
-			case game_state::level:
+			case game_state::level_on:
 				if (_check_win())
-					game_state = game_state::end_level;
+				{
+					game_state = game_state::level_complete;
+					sound_level_complete.play();
+				}
 				for (auto& i : _vertexes)
 					i.on_entered(pos);
 				for (auto& i : _chips)
@@ -241,6 +269,10 @@ namespace game
 					i.on_drow(_window);
 				_window.draw(_text_total_step);
 				_window.draw(_text_level);
+				break;
+			case game_state::game_over:
+				_window.draw(_text_game_over);
+				_window.draw(_text_next_level);
 				break;
 			default:
 				break;
@@ -272,6 +304,14 @@ namespace game
 			std::string path_music("resources/back_music.ogg");
 			if (!_music.openFromFile(path_music.c_str()))
 				throw path_music.c_str();
+
+			std::string path_sound_select("resources/sound_select.wav");
+			if (!_sound_select_buffer.loadFromFile(path_sound_select.c_str()))
+				throw path_sound_select.c_str();
+
+			std::string path_sound_level_complete("resources/sound_level_complete.wav");
+			if (!_sound_level_complete_buffer.loadFromFile(path_sound_level_complete.c_str()))
+				throw path_sound_level_complete.c_str();
 		}
 		catch (const std::exception& ex)
 		{
@@ -296,13 +336,13 @@ namespace game
 		_graph.set_vertex(g_con.vertex_count);
 
 		auto mult = _set_scale(g_con, _window.getSize());
-
-		if (mult > 2.2f)mult = 2.2f;
+		if (mult > 2.2f) mult = 2.2f;
 
 		sf::Sprite s_chip_back;
 		s_chip_back.setTexture(_chip_back_texture);
+		sf::Sound sound_select_vertex(_sound_select_buffer);
 		for (auto& i : g_con.vertex_pos)
-			_vertexes.push_back({ {i.x, i.y},mult ,s_chip_back });
+			_vertexes.push_back({ {i.x, i.y},mult ,s_chip_back,sound_select_vertex });
 
 		for (auto& i : g_con.chip_pos_win)
 			_vertexes[i].set_color(g_colors[i]);

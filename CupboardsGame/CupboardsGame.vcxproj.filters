@@ -94,4 +94,12 @@
     <Text Include="resources\level5.txt" />
     <Text Include="resources\level6.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="resources\sound_select.wav">
+      <Filter>Файлы ресурсов</Filter>
+    </Media>
+    <Media Include="resources\sound_level_complete.wav">
+      <Filter>Файлы ресурсов</Filter>
+    </Media>
+  </ItemGroup>
 </Project>

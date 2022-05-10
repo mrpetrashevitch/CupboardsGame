@@ -432,6 +432,10 @@ copy /Y "$(SolutionDir)SFML\bin\$(PlatformTarget)\openal32.dll"  "$(TargetDir)op
     <Text Include="resources\level5.txt" />
     <Text Include="resources\level6.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="resources\sound_level_complete.wav" />
+    <Media Include="resources\sound_select.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

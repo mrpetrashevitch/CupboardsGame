@@ -22,18 +22,22 @@ namespace game
 	private:
 		sf::RenderWindow _window;
 		sf::Font _font;
-		sf::Music _music;
 		sf::Texture _chip_texture;
 		sf::Texture _chip_back_texture;
 		sf::Texture _chip_back_blur_texture;
 		sf::Texture _background_texture;
 
 		sf::Text _text_game_name;
+		sf::Text _text_game_over;
 		sf::Text _text_press_start;
 		sf::Text _text_next_level;
 		sf::Text _text_loading;
 		sf::Text _text_total_step;
 		sf::Text _text_level;
+
+		sf::Music _music;
+		sf::SoundBuffer _sound_select_buffer;
+		sf::SoundBuffer _sound_level_complete_buffer;
 
 		graph::graph _graph;
 		std::vector<object::vertex> _vertexes;

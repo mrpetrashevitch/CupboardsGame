@@ -1,13 +1,14 @@
 #pragma once
 #include "../../CupboardsGame/build_config.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 namespace game::object
 {
 	class vertex
 	{
 	public:
-		vertex(const sf::Vector2f& pos, float mult, const sf::Sprite& sp, sf::Color color = sf::Color::Transparent);;
+		vertex(const sf::Vector2f& pos, float mult, const sf::Sprite& sp, const sf::Sound& sb, sf::Color color = sf::Color::Transparent);
 		~vertex();;
 		void set_color(sf::Color color);
 		sf::Color get_color();
@@ -27,7 +28,11 @@ namespace game::object
 		sf::Color _color_back_norm;
 		sf::Color _color_back_sel;
 
+		sf::Sound _sound_select;
+		bool _played = false;
+
 		bool _is_selected = false;
 		bool _is_flash = false;
+
 	};
 }

@@ -2,11 +2,12 @@
 
 namespace game::object
 {
-	vertex::vertex(const sf::Vector2f& pos, float mult, const sf::Sprite& sp, sf::Color color) :
+	vertex::vertex(const sf::Vector2f& pos, float mult, const sf::Sprite& sp, const sf::Sound& sb, sf::Color color) :
 		_base(sp),
 		_base_size(70.f * mult, 60.f * mult),
 		_base_back(sp),
-		_base_back_size(76.f * mult, 65.1f * mult)
+		_base_back_size(76.f * mult, 65.1f * mult),
+		_sound_select(sb)
 	{
 		_base.setScale(_base_size.x / sp.getTexture()->getSize().x, _base_size.y / sp.getTexture()->getSize().y);
 		_base.setOrigin(sp.getTexture()->getSize().x / 2.f, sp.getTexture()->getSize().y / 2.f);
@@ -17,6 +18,7 @@ namespace game::object
 		_base_back.setPosition(pos.x, pos.y);
 
 		set_color(color);
+		_sound_select.setVolume(30.f);
 	}
 
 	vertex::~vertex()
@@ -68,11 +70,17 @@ namespace game::object
 			(_base.getPosition().y + _base_size.y / 2 > pos.y))
 		{
 			_base_back.setColor(_color_back_sel);
+			if (!_played)
+			{
+				_sound_select.play();
+				_played = true;
+			}
 		}
 		else
 		{
 			if (!_is_flash)
 				_base_back.setColor(_color_back_norm);
+			_played = false;
 		}
 	}
 
